@@ -1,6 +1,6 @@
 name: 'Cloudinary Upload'
 author: 'nichoth'
-description: 'Upload your medias with Cloudinary Upload Github Action to Cloudinary SaaS solution.'
+description: 'Upload your medias with Cloudinary Upload Github Action to Cloudinary.'
 branding:
   icon: arrow-up-circle
   color: purple
