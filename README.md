@@ -25,6 +25,7 @@ Add the following step to your workflow:
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
           api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
           public_id_prefix: "user-files"
+          folder: "cool-folder-name"
           image: "./your-image.jpg"
 ```
 

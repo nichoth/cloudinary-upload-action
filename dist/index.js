@@ -57377,12 +57377,15 @@ const path = __nccwpck_require__(1017);
  * @param {string} apiKey 
  * @param {string} apiSecret 
  * @param {string[]} files 
- * @param {{ prefix?:string }} opts Can add the files to a sub-folder
+ * @param {{
+ *   prefix?:string,
+ *   folder?:string
+ * }} opts Can add the files to a sub-folder
  * @returns {Promise<import('cloudinary').UploadApiResponse[]>}
  */
 module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
   opts = opts || {}
-  const { prefix } = opts
+  const { prefix, folder } = opts
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
@@ -57391,6 +57394,13 @@ module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
 
   const cloudinaryUploader = file => {
     core.info(`uploading ${file}`);
+
+    const opts = {
+      public_id: path.basename(file, path.extname(file))
+    }
+
+    if (prefix) opts.prefix = prefix
+    if (folder) opts.folder = folder
 
     return cloudinary.uploader.upload(file, {
       public_id_prefix: prefix || '',
@@ -67267,6 +67277,7 @@ async function run() {
     const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
     const prefix = core.getInput('public_id_prefix');
+    const folder = core.getInput('folder');
 
     if (!cloudName || !apiKey || !apiSecret) {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
@@ -67284,7 +67295,8 @@ async function run() {
     }
 
     await uploader(cloudName, apiKey, apiSecret, paths, {
-      prefix
+      prefix,
+      folder
     });
   } catch (error) {
     core.setFailed(error.message);

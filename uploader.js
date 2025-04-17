@@ -18,12 +18,15 @@ const path = require('path');
  * @param {string} apiKey 
  * @param {string} apiSecret 
  * @param {string[]} files 
- * @param {{ prefix?:string }} opts Can add the files to a sub-folder
+ * @param {{
+ *   prefix?:string,
+ *   folder?:string
+ * }} opts Can add the files to a sub-folder
  * @returns {Promise<import('cloudinary').UploadApiResponse[]>}
  */
 module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
   opts = opts || {}
-  const { prefix } = opts
+  const { prefix, folder } = opts
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
@@ -32,6 +35,13 @@ module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
 
   const cloudinaryUploader = file => {
     core.info(`uploading ${file}`);
+
+    const opts = {
+      public_id: path.basename(file, path.extname(file))
+    }
+
+    if (prefix) opts.prefix = prefix
+    if (folder) opts.folder = folder
 
     return cloudinary.uploader.upload(file, {
       public_id_prefix: prefix || '',

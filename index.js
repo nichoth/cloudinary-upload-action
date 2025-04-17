@@ -20,6 +20,7 @@ async function run() {
     const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
     const prefix = core.getInput('public_id_prefix');
+    const folder = core.getInput('folder');
 
     if (!cloudName || !apiKey || !apiSecret) {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
@@ -37,7 +38,8 @@ async function run() {
     }
 
     await uploader(cloudName, apiKey, apiSecret, paths, {
-      prefix
+      prefix,
+      folder
     });
   } catch (error) {
     core.setFailed(error.message);
