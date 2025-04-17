@@ -32,6 +32,10 @@ Add the following step to your workflow:
           reset: true
 ```
 
+> [!WARNING]  
+> If you pass in `reset` wihout passing in a `folder`, this will delete
+> all assets from the Cloudinary account.
+
 You can specify some options for creating assets in Cloudinary:
 
 * `folder` -- Add all files to a subfolder
