@@ -5,6 +5,10 @@ branding:
   icon: arrow-up-circle
   color: purple
 inputs:
+  reset:
+    description: 'Remove all assets from the given folder before uploading.'
+    required: false
+    default: false
   folder:
     description: 'Folder for Cloudinary'
     required: false
