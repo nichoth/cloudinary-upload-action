@@ -9,9 +9,8 @@ inputs:
     description: 'Folder for Cloudinary'
     required: false
   public_id_prefix:
-    description: 'An optional sub-folder'
+    description: 'An optional filename prefix'
     required: false
-    default: ''
   cloud-name:
     description: 'Cloudinary account name'
     required: false
