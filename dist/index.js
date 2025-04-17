@@ -57357,26 +57357,48 @@ exports["default"] = _default;
 /***/ 9730:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+// @ts-check
 const core = __nccwpck_require__(2186);
 const cloudinary = (__nccwpck_require__(6940).v2);
 const path = __nccwpck_require__(1017);
 
-module.exports = function uploader(cloudName, apiKey, apiSecret, files) {
+/**
+ * @TODO
+ *   - can upload as content addressed blob
+ *   - can upload to a different path, eg user-content/filename.jpg
+ *   - can do a 'replication', meaning it deletes files that have been removed
+ */
+
+// cloudinary.uploader.destroy(public_id, options).then(callback);
+
+/**
+ * 
+ * @param {string} cloudName 
+ * @param {string} apiKey 
+ * @param {string} apiSecret 
+ * @param {string[]} files 
+ * @param {{ prefix:string }} options Can add the files to a sub-folder
+ * @returns 
+ */
+module.exports = function uploader (cloudName, apiKey, apiSecret, files, {
+  prefix
+}) {
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret
-  });
+  })
 
   const cloudinaryUploader = file => {
     core.info(`uploading ${file}`);
 
     return cloudinary.uploader.upload(file, {
+      public_id_prefix: prefix || '',
       public_id: path.basename(file, path.extname(file)),
-    });
-  };
+    })
+  }
 
-  return Promise.all(files.map(cloudinaryUploader));
+  return Promise.all(files.map(cloudinaryUploader))
 }
 
 
@@ -67226,8 +67248,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186);
 const isGlob = __nccwpck_require__(4466);
 const glob = __nccwpck_require__(8211);
-
-const uploader = __nccwpck_require__(9730)
+const uploader = __nccwpck_require__(9730);
 
 function isJson(str) {
   try {
@@ -67245,6 +67266,7 @@ async function run() {
     const apiSecret = core.getInput('api-secret') || process.env.CLOUDINARY_API_SECRET;
     const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
+    const prefix = core.getInput('public_id_prefix');
 
     if (!cloudName || !apiKey || !apiSecret) {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
@@ -67261,7 +67283,9 @@ async function run() {
       throw new Error('one of image or images parameter is required');
     }
 
-    await uploader(cloudName, apiKey, apiSecret, paths);
+    await uploader(cloudName, apiKey, apiSecret, paths, {
+      prefix
+    });
   } catch (error) {
     core.setFailed(error.message);
   }

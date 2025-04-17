@@ -24,8 +24,12 @@ Add the following step to your workflow:
           cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
           api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
+          public_id_prefix: "user-files"
           image: "./your-image.jpg"
 ```
+
+You can add all files to a subfolder if you prefer, via `public_id_prefix`.
+
 
 ### Multiple files upload
 
@@ -58,12 +62,6 @@ See [action.yml](action.yml) for the full documentation for this action's inputs
 ## Credentials
 
 We recommend following [Configuration Cloudinary Documentation](https://cloudinary.com/documentation/node_integration#configuration) for adding your credentials.
-
-## Maintainers
-
-[![Emmanuel Gautier](https://avatars0.githubusercontent.com/u/2765366?s=144)](https://www.emmanuelgautier.com) |
---- |
-[Emmanuel Gautier](https://www.emmanuelgautier.com) |
 
 ## License
 

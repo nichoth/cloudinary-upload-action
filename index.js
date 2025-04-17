@@ -1,8 +1,7 @@
 const core = require('@actions/core');
 const isGlob = require('is-glob');
 const glob = require('glob');
-
-const uploader = require('./uploader')
+const uploader = require('./uploader');
 
 function isJson(str) {
   try {
@@ -20,6 +19,7 @@ async function run() {
     const apiSecret = core.getInput('api-secret') || process.env.CLOUDINARY_API_SECRET;
     const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
+    const prefix = core.getInput('public_id_prefix');
 
     if (!cloudName || !apiKey || !apiSecret) {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
@@ -36,7 +36,9 @@ async function run() {
       throw new Error('one of image or images parameter is required');
     }
 
-    await uploader(cloudName, apiKey, apiSecret, paths);
+    await uploader(cloudName, apiKey, apiSecret, paths, {
+      prefix
+    });
   } catch (error) {
     core.setFailed(error.message);
   }
