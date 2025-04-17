@@ -19,18 +19,26 @@ Add the following step to your workflow:
 
 ```yaml
     - name: Cloudinary Upload Image
-      uses: emmanuelgautier/cloudinary-upload-action@v2.0
+      uses: nichoth/cloudinary-upload-action@v3.7
       with:
           cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
           api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
           public_id_prefix: "user-files"
           folder: "cool-folder-name"
-          image: "./your-image.jpg"
+          images: "./assets/*.jpg"
+          reset: true
 ```
 
-You can add all files to a subfolder if you prefer, via `public_id_prefix`.
+You can specify some options for creating assets in Cloudinary:
 
+* `folder` -- Add all files to a subfolder
+* `public_id_prefix` -- prefix for the filename
+* `reset` -- Delete all assets before uploading. Make the Cloudinary API look
+  exactly like the local files. The scope of the delete depends on the `folder`
+  option passed in. Without a `folder` option, it will **delete all assets**
+  from the Cloudinary account.
+ 
 
 ### Multiple files upload
 
