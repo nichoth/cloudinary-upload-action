@@ -57379,20 +57379,22 @@ const path = __nccwpck_require__(1017);
  * @param {string[]} files 
  * @param {{
  *   prefix?:string,
- *   folder?:string
+ *   folder?:string,
+ *   reset?:boolean
  * }} opts Can add the files to a sub-folder
  * @returns {Promise<import('cloudinary').UploadApiResponse[]>}
  */
-module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
+module.exports = async function uploader (cloudName, apiKey, apiSecret, files, opts) {
   opts = opts || {}
-  const { prefix, folder } = opts
+  const { prefix, reset } = opts
+  let { folder } = opts
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,
     api_secret: apiSecret
   })
 
-  const cloudinaryUploader = file => {
+  const cloudinaryUploader = async file => {
     core.info(`uploading ${file}`);
 
     const opts = {
@@ -57401,6 +57403,20 @@ module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
 
     if (prefix) opts.prefix = prefix
     if (folder) opts.folder = folder
+
+    if (reset) {
+      if (!folder) {
+        // then delete everything
+        await cloudinary.api.delete_all_resources()
+      } else {
+        // delete just this one folder
+        // await cloudinary.api.resources_by_asset_folder(folder, options, callback);
+        if (folder[folder.length - 1] !== '/') {
+          folder = folder + '/'
+        }
+        await cloudinary.api.delete_resources_by_prefix(folder, {})
+      }
+    }
 
     return cloudinary.uploader.upload(file, opts)
   }
@@ -67275,6 +67291,7 @@ async function run() {
     const imagesPath = core.getInput('images');
     const prefix = core.getInput('public_id_prefix');
     const folder = core.getInput('folder');
+    const reset = core.getInput('reset');
 
     if (!cloudName || !apiKey || !apiSecret) {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
@@ -67293,7 +67310,8 @@ async function run() {
 
     await uploader(cloudName, apiKey, apiSecret, paths, {
       prefix,
-      folder
+      folder,
+      reset
     });
   } catch (error) {
     core.setFailed(error.message);
