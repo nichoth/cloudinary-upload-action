@@ -5,6 +5,9 @@ branding:
   icon: arrow-up-circle
   color: purple
 inputs:
+  folder:
+    description: 'Folder for Cloudinary'
+    required: false
   public_id_prefix:
     description: 'An optional sub-folder'
     required: false
