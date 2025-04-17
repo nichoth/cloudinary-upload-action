@@ -43,10 +43,7 @@ module.exports = function uploader (cloudName, apiKey, apiSecret, files, opts) {
     if (prefix) opts.prefix = prefix
     if (folder) opts.folder = folder
 
-    return cloudinary.uploader.upload(file, {
-      public_id_prefix: prefix || '',
-      public_id: path.basename(file, path.extname(file)),
-    })
+    return cloudinary.uploader.upload(file, opts)
   }
 
   return Promise.all(files.map(cloudinaryUploader))
