@@ -5,6 +5,10 @@ branding:
   icon: arrow-up-circle
   color: purple
 inputs:
+  public_id_prefix:
+    description: 'An optional sub-folder'
+    required: false
+    default: ''
   cloud-name:
     description: 'Cloudinary account name'
     required: false
