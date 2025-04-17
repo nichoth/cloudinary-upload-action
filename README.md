@@ -1,6 +1,8 @@
 ## "Cloudinary Upload" Action For GitHub Actions
 
-Upload your medias with Cloudinary Upload Github Action to [Cloudinary](https://cloudinary.com/) SaaS solution for images and videos upload, storage, optimization and CDN.
+Upload files to [Cloudinary](https://cloudinary.com/).
+
+Created as a way to use Cloudinary with a headless CMS.
 
 **Table of Contents**
 
