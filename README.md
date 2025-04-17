@@ -19,7 +19,7 @@ Add the following step to your workflow:
 
 ```yaml
     - name: Cloudinary Upload Image
-      uses: emmanuelgautier/cloudinary-upload-action@v2
+      uses: emmanuelgautier/cloudinary-upload-action@v2.0
       with:
           cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
