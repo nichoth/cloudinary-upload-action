@@ -9,8 +9,9 @@ Created as a way to use Cloudinary with a headless CMS.
 <!-- toc -->
 
 - [Usage](#usage)
+  * [Multiple files upload](#multiple-files-upload)
+- [Example](#example)
 - [Credentials](#credentials)
-- [Maintainers](#maintainers)
 - [License](#license)
 
 <!-- tocstop -->
@@ -73,6 +74,39 @@ Or directly an array of files path.
 ```
 
 See [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
+
+## Example
+An full example of a Github action:
+
+```yml
+name: Cloudinary Upload
+
+on:
+    push:
+      branches:
+        - 'main'
+      paths:
+        - 'src/assets/images/*'
+
+jobs:
+  deploy:
+    name: Cloudinary Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Push to Cloudinary
+      uses: nichoth/cloudinary-upload-action@v3.9
+      with:
+          cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          api-key: ${{ secrets.CLOUDINARY_API_KEY }}
+          api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
+          folder: "client-data"
+          reset: true
+          images: "./src/assets/images/*"
+```
 
 ## Credentials
 
