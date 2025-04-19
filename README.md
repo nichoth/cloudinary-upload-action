@@ -76,7 +76,7 @@ Or directly an array of files path.
 See [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
 
 ## Example
-An full example of a Github action:
+Full example of a Github action:
 
 ```yml
 name: Cloudinary Upload
