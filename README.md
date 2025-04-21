@@ -37,6 +37,15 @@ Add the following step to your workflow:
 > If you pass in `reset` wihout passing in a `folder`, this will delete
 > all assets from the Cloudinary account.
 
+### secrets
+Define a few Github secrets that must be passed into the action:
+
+```sh
+CLOUDINARY_CLOUD_NAME="cool-cloud"
+CLOUDINARY_API_KEY="123456"
+CLOUDINARY_API_SECRET="123abc"
+```
+
 You can specify some options for creating assets in Cloudinary:
 
 * `folder` -- Add all files to a subfolder
