@@ -49,7 +49,8 @@ You can specify some options for creating assets in Cloudinary:
 
 ### Multiple files upload
 
-You can upload multiple files with the `images` parameter putting a file path pattern.
+You can upload multiple files with the `images` parameter by putting a file
+path pattern.
 
 ```yaml
     - name: Cloudinary Upload Images
@@ -61,7 +62,7 @@ You can upload multiple files with the `images` parameter putting a file path pa
           images: "./medias/**/*.jpg"
 ```
 
-Or directly an array of files path.
+Or directly an array of file paths.
 
 ```yaml
     - name: Cloudinary Upload Images
@@ -73,10 +74,11 @@ Or directly an array of files path.
           images: "[\"./medias/images/test1.jpg\", \"./medias/images/test2.jpg\"]"
 ```
 
-See [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
+See [action.yml](action.yml) for the full documentation for this action's
+inputs and outputs.
 
 ## Example
-Full example of a Github action:
+Full example of consuming this action:
 
 ```yml
 name: Cloudinary Upload
@@ -110,8 +112,5 @@ jobs:
 
 ## Credentials
 
-We recommend following [Configuration Cloudinary Documentation](https://cloudinary.com/documentation/node_integration#configuration) for adding your credentials.
-
-## License
-
-MIT © [Emmanuel Gautier](https://www.emmanuelgautier.com)
+We recommend following [Cloudinary Configuration Docs](https://cloudinary.com/documentation/node_integration#configuration)
+for adding your credentials.
