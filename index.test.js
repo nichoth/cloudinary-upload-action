@@ -15,3 +15,10 @@ test('upload one image', () => {
   const files = ['./medias/images/test1.jpg'];
   expect(uploader(cloudName, apiKey, apiSecret, files)).resolves.toHaveLength(1);
 });
+
+test('upload an image with a prefix', () => {
+  const files = ['./medias/images/test2.jpg']
+  expect(uploader(cloudName, apiKey, apiSecret, files, {
+    prefix: 'abc123.'
+  })).resolves.toHaveLength(1);
+});
