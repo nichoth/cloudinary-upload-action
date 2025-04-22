@@ -22,3 +22,11 @@ test('upload an image with a prefix', () => {
     prefix: 'abc123.'
   })).resolves.toHaveLength(1);
 });
+
+test('upload and reset everything', () => {
+  const files = ['./medias/images/cinnamon-roll.jpg']
+  expect(uploader(cloudName, apiKey, apiSecret, files, {
+    prefix: 'testing.',
+    reset: true
+  })).resolves.toHaveLength(1);
+})
