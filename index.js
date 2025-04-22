@@ -17,7 +17,6 @@ async function run() {
     const cloudName = core.getInput('cloud-name') || process.env.CLOUDINARY_CLOUD_NAME;
     const apiKey = core.getInput('api-key') || process.env.CLOUDINARY_API_KEY;
     const apiSecret = core.getInput('api-secret') || process.env.CLOUDINARY_API_SECRET;
-    const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
     const prefix = core.getInput('public_id_prefix');
     const folder = core.getInput('folder');
@@ -32,8 +31,6 @@ async function run() {
       paths = JSON.parse(imagesPath);
     } else if (isGlob(imagesPath)) {
       paths = glob.sync(imagesPath);
-    } else if (imagePath) {
-      paths = [imagePath];
     } else {
       throw new Error('one of image or images parameter is required');
     }

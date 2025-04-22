@@ -39,10 +39,9 @@ module.exports = async function uploader (cloudName, apiKey, apiSecret, files, o
     core.info(`uploading ${file}`);
 
     const opts = {
-      public_id: path.basename(file, path.extname(file))
+      public_id: (prefix || '') + path.basename(file, path.extname(file))
     }
 
-    if (prefix) opts.prefix = prefix
     if (folder) opts.folder = folder
 
     if (reset) {
