@@ -57395,33 +57395,38 @@ module.exports = async function uploader (cloudName, apiKey, apiSecret, files, o
   })
 
   const cloudinaryUploader = async file => {
-    core.info(`uploading ${file}`);
+    core.info(`uploading ${file} with prefix ${prefix}`);
 
     const opts = {
-      public_id: path.basename(file, path.extname(file))
+      public_id: (prefix || '') + path.basename(file, path.extname(file))
     }
 
-    if (prefix) opts.prefix = prefix
     if (folder) opts.folder = folder
 
     if (reset) {
-      if (!folder) {
+      if (!folder && !prefix) {
         // then delete everything
         await cloudinary.api.delete_all_resources()
       } else {
-        // delete just this one folder
-        // await cloudinary.api.resources_by_asset_folder(folder, options, callback);
-        if (folder[folder.length - 1] !== '/') {
-          folder = folder + '/'
+        if (folder) {
+          // delete this one folder
+          if (folder[folder.length - 1] !== '/') {
+            // must have the trailing slash
+            folder = folder + '/'
+          }
+          await cloudinary.api.delete_resources_by_prefix(folder)
         }
-        await cloudinary.api.delete_resources_by_prefix(folder, {})
+
+        if (prefix) {
+          await cloudinary.api.delete_resources_by_prefix(prefix)
+        }
       }
     }
 
-    return cloudinary.uploader.upload(file, opts)
+    return await cloudinary.uploader.upload(file, opts)
   }
 
-  return Promise.all(files.map(cloudinaryUploader))
+  return await Promise.all(files.map(cloudinaryUploader))
 }
 
 
@@ -67287,7 +67292,6 @@ async function run() {
     const cloudName = core.getInput('cloud-name') || process.env.CLOUDINARY_CLOUD_NAME;
     const apiKey = core.getInput('api-key') || process.env.CLOUDINARY_API_KEY;
     const apiSecret = core.getInput('api-secret') || process.env.CLOUDINARY_API_SECRET;
-    const imagePath = core.getInput('image');
     const imagesPath = core.getInput('images');
     const prefix = core.getInput('public_id_prefix');
     const folder = core.getInput('folder');
@@ -67302,8 +67306,6 @@ async function run() {
       paths = JSON.parse(imagesPath);
     } else if (isGlob(imagesPath)) {
       paths = glob.sync(imagesPath);
-    } else if (imagePath) {
-      paths = [imagePath];
     } else {
       throw new Error('one of image or images parameter is required');
     }
