@@ -36,7 +36,7 @@ module.exports = async function uploader (cloudName, apiKey, apiSecret, files, o
   })
 
   const cloudinaryUploader = async file => {
-    core.info(`uploading ${file}`);
+    core.info(`uploading ${file} with prefix ${prefix}`);
 
     const opts = {
       public_id: (prefix || '') + path.basename(file, path.extname(file))
