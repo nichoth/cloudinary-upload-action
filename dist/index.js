@@ -67273,19 +67273,11 @@ module.exports = {"i8":"2.5.0"};
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+// @ts-check
 const core = __nccwpck_require__(2186);
 const isGlob = __nccwpck_require__(4466);
 const glob = __nccwpck_require__(8211);
 const uploader = __nccwpck_require__(9730);
-
-function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
 
 async function run() {
   try {
@@ -67301,19 +67293,23 @@ async function run() {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
     }
 
+    console.log('**given**', imagesPath)
+
     let paths = [];
     if (isJson(imagesPath)) {
       paths = JSON.parse(imagesPath);
     } else if (isGlob(imagesPath)) {
       paths = glob.sync(imagesPath);
+    } else if (typeof imagesPath === 'string') {
+      paths = [imagesPath]
     } else {
-      throw new Error('one of image or images parameter is required');
+      throw new Error('Images parameter is required');
     }
 
     await uploader(cloudName, apiKey, apiSecret, paths, {
       prefix,
       folder,
-      reset
+      reset: !!reset
     });
   } catch (error) {
     core.setFailed(error.message);
@@ -67321,6 +67317,15 @@ async function run() {
 }
 
 run();
+
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
 
 })();
 
