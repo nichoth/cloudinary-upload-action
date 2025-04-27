@@ -4,15 +4,6 @@ const isGlob = require('is-glob');
 const glob = require('glob');
 const uploader = require('./uploader');
 
-function isJson(str) {
-  try {
-    JSON.parse(str);
-  } catch (e) {
-    return false;
-  }
-  return true;
-}
-
 async function run() {
   try {
     const cloudName = core.getInput('cloud-name') || process.env.CLOUDINARY_CLOUD_NAME;
@@ -33,7 +24,7 @@ async function run() {
     } else if (isGlob(imagesPath)) {
       paths = glob.sync(imagesPath);
     } else if (typeof imagesPath === 'string') {
-      paths.push(imagesPath)
+      paths = [imagesPath]
     } else {
       throw new Error('one of image or images parameter is required');
     }
@@ -49,3 +40,12 @@ async function run() {
 }
 
 run();
+
+function isJson(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
