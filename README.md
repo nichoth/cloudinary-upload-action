@@ -109,14 +109,14 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Push to Cloudinary
-      uses: nichoth/cloudinary-upload-action@v3.9
+      uses: nichoth/cloudinary-upload-action@v3.13
       with:
           cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
           api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
-          folder: "client-data"
+          public_id_prefix: "${{ github.event.repository.name }}."
           reset: true
-          images: "./src/assets/images/*"
+          images: "./src/assets/images/*.{jpg,png,jpeg,webp,avif,gif,svg}"
 ```
 
 ## Credentials
