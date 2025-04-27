@@ -51,7 +51,7 @@ jobs:
           cloud-name: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           api-key: ${{ secrets.CLOUDINARY_API_KEY }}
           api-secret: ${{ secrets.CLOUDINARY_API_SECRET }}
-          image: "./medias/images/test1.jpg"
+          images: "./medias/images/test1.jpg"
 
   test-bulk-upload-images-pattern:
     runs-on: ubuntu-latest
