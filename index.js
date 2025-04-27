@@ -1,3 +1,4 @@
+// @ts-check
 const core = require('@actions/core');
 const isGlob = require('is-glob');
 const glob = require('glob');
@@ -31,6 +32,8 @@ async function run() {
       paths = JSON.parse(imagesPath);
     } else if (isGlob(imagesPath)) {
       paths = glob.sync(imagesPath);
+    } else if (typeof imagesPath === 'string') {
+      paths.push(imagesPath)
     } else {
       throw new Error('one of image or images parameter is required');
     }
@@ -38,7 +41,7 @@ async function run() {
     await uploader(cloudName, apiKey, apiSecret, paths, {
       prefix,
       folder,
-      reset
+      reset: !!reset
     });
   } catch (error) {
     core.setFailed(error.message);
