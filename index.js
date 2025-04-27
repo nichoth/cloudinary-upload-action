@@ -18,6 +18,8 @@ async function run() {
       throw new Error('Cloudinary cloud name, api key and api secret are required');
     }
 
+    console.log('**given**', imagesPath)
+
     let paths = [];
     if (isJson(imagesPath)) {
       paths = JSON.parse(imagesPath);
@@ -26,7 +28,7 @@ async function run() {
     } else if (typeof imagesPath === 'string') {
       paths = [imagesPath]
     } else {
-      throw new Error('one of image or images parameter is required');
+      throw new Error('Images parameter is required');
     }
 
     await uploader(cloudName, apiKey, apiSecret, paths, {
