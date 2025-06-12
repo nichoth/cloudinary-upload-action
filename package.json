@@ -1,6 +1,6 @@
 {
   "name": "cloudinary-upload-action",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Cloudinary Upload Github Action",
   "main": "index.js",
   "scripts": {
