@@ -57366,7 +57366,6 @@ const path = __nccwpck_require__(1017);
  * @TODO
  *   - can upload as content addressed blob
  *   - can upload to a different path, eg user-content/filename.jpg
- *   - can do a 'replication', meaning it deletes files that have been removed
  */
 
 // cloudinary.uploader.destroy(public_id, options).then(callback);
@@ -57394,6 +57393,27 @@ module.exports = async function uploader (cloudName, apiKey, apiSecret, files, o
     api_secret: apiSecret
   })
 
+  if (reset) {
+    if (!folder && !prefix) {
+      // then delete everything
+      await cloudinary.api.delete_all_resources()
+    } else {
+      if (folder) {
+        // delete this one folder
+        if (folder[folder.length - 1] !== '/') {
+          // must have the trailing slash
+          folder = folder + '/'
+        }
+
+        await cloudinary.api.delete_resources_by_prefix(folder)
+      }
+
+      if (prefix) {
+        await cloudinary.api.delete_resources_by_prefix(prefix)
+      }
+    }
+  }
+
   const cloudinaryUploader = async file => {
     core.info(`uploading ${file} with prefix ${prefix}`);
 
@@ -57403,27 +57423,7 @@ module.exports = async function uploader (cloudName, apiKey, apiSecret, files, o
 
     if (folder) opts.folder = folder
 
-    if (reset) {
-      if (!folder && !prefix) {
-        // then delete everything
-        await cloudinary.api.delete_all_resources()
-      } else {
-        if (folder) {
-          // delete this one folder
-          if (folder[folder.length - 1] !== '/') {
-            // must have the trailing slash
-            folder = folder + '/'
-          }
-          await cloudinary.api.delete_resources_by_prefix(folder)
-        }
-
-        if (prefix) {
-          await cloudinary.api.delete_resources_by_prefix(prefix)
-        }
-      }
-    }
-
-    return await cloudinary.uploader.upload(file, opts)
+    return cloudinary.uploader.upload(file, opts)
   }
 
   return await Promise.all(files.map(cloudinaryUploader))
